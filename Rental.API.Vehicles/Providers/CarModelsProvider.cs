@@ -29,18 +29,18 @@ namespace Rental.API.Vehicles.Providers
         {
             if (!dBContext.CarModels.Any())
             {
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 1, MakeID = 1, Name = "A3" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 2, MakeID = 1, Name = "A4" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 3, MakeID = 2, Name = "M3" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 4, MakeID = 2, Name = "M5" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 5, MakeID = 3, Name = "Onix" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 6, MakeID = 3, Name = "S10" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 7, MakeID = 4, Name = "Toro" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 8, MakeID = 4, Name = "Uno" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 9, MakeID = 5, Name = "Fiesta" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 10, MakeID = 5, Name = "Focus" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 11, MakeID = 6, Name = "Jetta" });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 12, MakeID = 6, Name = "Tiguan" });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 1, MakeID = 1, Name = "A3", VehicleCategoryID = 2 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 2, MakeID = 1, Name = "A4", VehicleCategoryID = 2 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 3, MakeID = 2, Name = "M3", VehicleCategoryID = 3 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 4, MakeID = 2, Name = "M5", VehicleCategoryID = 3 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 5, MakeID = 3, Name = "Onix", VehicleCategoryID = 1 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 6, MakeID = 3, Name = "S10", VehicleCategoryID = 2 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 7, MakeID = 4, Name = "Toro", VehicleCategoryID = 2 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 8, MakeID = 4, Name = "Uno", VehicleCategoryID = 1 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 9, MakeID = 5, Name = "Fiesta", VehicleCategoryID = 1 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 10, MakeID = 5, Name = "Focus", VehicleCategoryID = 2 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 11, MakeID = 6, Name = "Jetta", VehicleCategoryID = 2 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 12, MakeID = 6, Name = "Tiguan", VehicleCategoryID = 2 });
                 dBContext.SaveChanges();
             }
         }
@@ -49,7 +49,7 @@ namespace Rental.API.Vehicles.Providers
         {
             try
             {
-                var carModels = await dBContext.CarModels.Include(m => m.Make).ToListAsync();
+                var carModels = await dBContext.CarModels.Include(m => m.Make).Include(c => c.VehicleCategory).ToListAsync();
                 if (carModels != null && carModels.Any())
                 {
                     var result = mapper.Map<IEnumerable<DB.CarModel>, IEnumerable<Models.CarModel>>(carModels);
@@ -68,7 +68,7 @@ namespace Rental.API.Vehicles.Providers
         {
             try
             {
-                var carModel = await dBContext.CarModels.Include(m => m.Make).FirstOrDefaultAsync(m => m.ID == id);
+                var carModel = await dBContext.CarModels.Include(m => m.Make).Include(c => c.VehicleCategory).FirstOrDefaultAsync(m => m.ID == id);
 
                 if (carModel != null)
                 {

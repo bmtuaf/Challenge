@@ -16,7 +16,6 @@ namespace Rental.API.Vehicles.DB
         public int TrunkLimit { get; set; }
         public int CategoryID { get; set; }
         public virtual FuelType FuelType { get; set; }
-        public virtual VehicleCategory VehicleCategory { get; set; }
         public virtual CarModel CarModel { get; set; }
     }
 }
