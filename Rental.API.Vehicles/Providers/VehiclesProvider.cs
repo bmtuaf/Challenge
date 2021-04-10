@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Rental.API.Vehicles.DB;
 using Rental.API.Vehicles.Interfaces;
+using Rental.API.Vehicles.Models.RequestModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +67,7 @@ namespace Rental.API.Vehicles.Providers
         {
             try
             {
-                var vehicle = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(f => f.FuelType).FirstOrDefaultAsync(m => m.ID == id);
+                var vehicle = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(f => f.FuelType).FirstOrDefaultAsync(v => v.ID == id);
 
                 if (vehicle != null)
                 {
@@ -81,5 +82,88 @@ namespace Rental.API.Vehicles.Providers
                 return (false, null, ex.Message);
             }
         }
-    }
+
+        public async Task<(bool IsSuccess, Models.ViewModels.Vehicle Vehicle, string ErrorMessage)> PostVehicleAsync(VehicleRequest vehicle)
+        {
+            try
+            {
+                var newVehicle = new DB.Vehicle()
+                {
+                    CarModelID = vehicle.CarModelID,
+                    FuelTypeID = vehicle.FuelTypeID,
+                    LicensePlate = vehicle.LicensePlate,
+                    ModelYear = vehicle.ModelYear,
+                    TrunkLimit = vehicle.TrunkLimit,
+                    RentalPricePerHour = vehicle.RentalPricePerHour
+
+                };
+                dBContext.Add(newVehicle);
+                if (await dBContext.SaveChangesAsync() > 0)
+                {
+                    newVehicle = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(f => f.FuelType).FirstOrDefaultAsync(v => v.ID == newVehicle.ID);
+                    var result = mapper.Map<DB.Vehicle, Models.ViewModels.Vehicle>(newVehicle);
+                    return (true, result, null);
+                }
+                return (false, null, "Failed to insert record.");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, Models.ViewModels.Vehicle Vehicle, string ErrorMessage)> DeleteVehicleAsync(int id)
+        {
+            try
+            {
+                var vehicle = new DB.Vehicle() { ID = id };
+                dBContext.Remove(vehicle);
+                if (await dBContext.SaveChangesAsync() > 0)
+                {
+                    return (true, null, null);
+                }
+                return (false, null, "Failed to delete record.");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, Models.ViewModels.Vehicle Vehicle, string ErrorMessage)> PutVehicleAsync(VehicleUpdateRequest vehicle)
+        {
+            try
+            {
+                var entity = await dBContext.Vehicles.FirstOrDefaultAsync(v => v.ID == vehicle.ID);
+                if (entity != null)
+                {
+                    entity.CarModelID = vehicle.CarModelID;
+                    entity.LicensePlate = string.IsNullOrEmpty(vehicle.LicensePlate) ? entity.LicensePlate : vehicle.LicensePlate;
+                    entity.ModelYear = vehicle.ModelYear;
+                    entity.RentalPricePerHour = vehicle.RentalPricePerHour;
+                    entity.FuelTypeID = vehicle.FuelTypeID;
+                    entity.TrunkLimit = vehicle.TrunkLimit;
+
+                    dBContext.Update(entity);
+
+                    if (await dBContext.SaveChangesAsync() > 0)
+                    {
+                        entity = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(f => f.FuelType).FirstOrDefaultAsync(v => v.ID == entity.ID);
+                        var result = mapper.Map<DB.Vehicle, Models.ViewModels.Vehicle>(entity);
+                        return (true, result, null);
+                    }
+                    return (false, null, "Failed to update record.");
+                }
+                return (false, null, "Montadora não encontrada.");
+
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+    }    
 }
