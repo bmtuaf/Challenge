@@ -39,7 +39,40 @@ namespace Rental.API.Vehicles.Controllers
                 return Ok(result.Make);
             }
             return NotFound();
-        }       
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> GetMakeAsync(string name)
+        {
+            var result = await makesProvider.PostMakeAsync(name);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Make);
+            }
+            return NotFound();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteMakeAsync(int id)
+        {
+            var result = await makesProvider.DeleteMakeAsync(id);
+            if (result.IsSuccess)
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutMakeAsync([FromBody] Make make)
+        {
+            var result = await makesProvider.PutMakeAsync(make);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Make);
+            }
+            return NotFound();
+        }
     }
     
 }

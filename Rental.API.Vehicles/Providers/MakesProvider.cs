@@ -79,24 +79,69 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        //public async Task<(bool IsSuccess, Models.Make Make, string ErrorMessage)> PostMakeAsync(string name)
-        //{
-        //    try
-        //    {
-        //        var teste = dBContext.Makes.Add(new DB.Make() { Name = name });
+        public async Task<(bool IsSuccess, Models.Make Make, string ErrorMessage)> PostMakeAsync(string name)
+        {
+            try
+            {
+                var make = new DB.Make() { Name = name };
+                dBContext.Add(make);                
+                if (await dBContext.SaveChangesAsync() > 0)
+                {
+                    var result = mapper.Map<DB.Make, Models.Make>(make);
+                    return (true, result, null);
+                }
+                return (false, null, "Failed to insert record.");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message); 
+            }
+        }
 
-        //        if (teste != null)
-        //        {
-        //            var result = mapper.Map<DB.Make, Models.Make>();
-        //            return (true, result, null);
-        //        }
-        //        return (false, null, "Not found");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        logger?.LogError(ex.ToString());
-        //        return (false, null, ex.Message);
-        //    }
-        //}
+        public async Task<(bool IsSuccess, Models.Make Make, string ErrorMessage)> DeleteMakeAsync(int id)
+        {
+            try
+            {
+                var make = new DB.Make() { ID = id };
+                dBContext.Remove(make);
+                if (await dBContext.SaveChangesAsync() > 0)
+                {                    
+                    return (true, null, null);
+                }
+                return (false, null, "Failed to delete record.");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, Models.Make Make, string ErrorMessage)> PutMakeAsync(Models.Make make)
+        {
+            try
+            {
+                var entity = await dBContext.Makes.FirstOrDefaultAsync(m => m.ID == make.ID);
+                if (entity != null)
+                {
+                    entity.Name = make.Name;
+                    dBContext.Update(entity);
+                    if (await dBContext.SaveChangesAsync() > 0)
+                    {
+                        var result = mapper.Map<DB.Make, Models.Make>(entity);
+                        return (true, result, null);
+                    }
+                    return (false, null, "Failed to update record.");
+                }
+                return (false, null, "Montadora não encontrada.");
+                
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
     }
 }
