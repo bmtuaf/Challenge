@@ -85,9 +85,6 @@ namespace Rental.API.Vehicles.Providers
         //    {
         //        var teste = dBContext.Makes.Add(new DB.Make() { Name = name });
 
-                
-
-
         //        if (teste != null)
         //        {
         //            var result = mapper.Map<DB.Make, Models.Make>();

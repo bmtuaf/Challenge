@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.DB
 {
-    public class CarModel
+    public class FuelType
     {
         public int ID { get; set; }
-        public int MakeID { get; set; }
-        public string Name { get; set; }
-        public virtual Make Make { get; set; }
+        public string FuelTypeName { get; set; }
     }
 }

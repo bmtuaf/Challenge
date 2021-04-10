@@ -29,6 +29,7 @@ namespace Rental.API.Vehicles
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IMakesProvider, MakesProvider>();
+            services.AddScoped<ICarModelsProvider, CarModelsProvider>();
             services.AddAutoMapper(typeof(Startup));            
             services.AddDbContext<VehiclesDBContext>(options =>
             {
