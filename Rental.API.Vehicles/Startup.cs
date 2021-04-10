@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Rental.API.Vehicles.DB;
 using Rental.API.Vehicles.Interfaces;
 using Rental.API.Vehicles.Providers;
+using Rental.API.Vehicles.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,13 +34,18 @@ namespace Rental.API.Vehicles
             services.AddScoped<IVehicleCategoriesProvider, VehicleCategoriesProvider>();
             services.AddScoped<IFuelTypesProvider, FuelTypesProvider>();
             services.AddScoped<IVehicleProvider, VehiclesProvider>();
-            services.AddAutoMapper(typeof(Startup));            
+
+            services.AddAutoMapper(typeof(Startup));   
+            
             services.AddDbContext<VehiclesDBContext>(options =>
             {
                 options.UseInMemoryDatabase("Vehicles");
-            });
+            }); 
+
             services.AddControllers();
             services.AddSwaggerGen();
+
+            InitializeDB(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +72,21 @@ namespace Rental.API.Vehicles
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void InitializeDB(IServiceCollection services)
+        {
+            var sp = services.BuildServiceProvider();
+
+            using (var scope = sp.CreateScope())
+            {
+                var scopedServices = scope.ServiceProvider;
+                var db = scopedServices.GetRequiredService<VehiclesDBContext>();
+
+                db.Database.EnsureCreated();
+
+                DBUtils.SeedData(db);
+            }
         }
     }
 }
