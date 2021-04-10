@@ -33,7 +33,7 @@ namespace Rental.API.Vehicles
             services.AddScoped<ICarModelsProvider, CarModelsProvider>();
             services.AddScoped<IVehicleCategoriesProvider, VehicleCategoriesProvider>();
             services.AddScoped<IFuelTypesProvider, FuelTypesProvider>();
-            services.AddScoped<IVehicleProvider, VehiclesProvider>();
+            services.AddScoped<IVehiclesProvider, VehiclesProvider>();
 
             services.AddAutoMapper(typeof(Startup));   
             

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Interfaces
 {
-    public interface IVehicleProvider
+    public interface IVehiclesProvider
     {
         Task<(bool IsSuccess, IEnumerable<Vehicle> Vehicles, string ErrorMessage)> GetVehiclesAsync();
         Task<(bool IsSuccess, Vehicle Vehicle, string ErrorMessage)> GetVehicleAsync(int id);

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Providers
 {
-    public class VehiclesProvider : IVehicleProvider
+    public class VehiclesProvider : IVehiclesProvider
     {
         private readonly VehiclesDBContext dBContext;
         private readonly ILogger<VehiclesProvider> logger;

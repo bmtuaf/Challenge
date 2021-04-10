@@ -13,9 +13,9 @@ namespace Rental.API.Vehicles.Controllers
     [Route("api/vehicles")]
     public class VehiclesController : ControllerBase
     {
-        private readonly IVehicleProvider vehicleProvider;
+        private readonly IVehiclesProvider vehicleProvider;
 
-        public VehiclesController(IVehicleProvider vehicleProvider)
+        public VehiclesController(IVehiclesProvider vehicleProvider)
         {
             this.vehicleProvider = vehicleProvider;
         }
