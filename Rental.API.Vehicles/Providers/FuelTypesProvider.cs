@@ -35,14 +35,14 @@ namespace Rental.API.Vehicles.Providers
                 dBContext.SaveChanges();
             }
         }
-        public async Task<(bool IsSuccess, IEnumerable<Models.FuelType> FuelTypes, string ErrorMessage)> GetFuelTypesAsync()
+        public async Task<(bool IsSuccess, IEnumerable<Models.ViewModels.FuelType> FuelTypes, string ErrorMessage)> GetFuelTypesAsync()
         {
             try
             {
                 var fuelTypes = await dBContext.FuelTypes.ToListAsync();
                 if (fuelTypes != null && fuelTypes.Any())
                 {
-                    var result = mapper.Map<IEnumerable<DB.FuelType>, IEnumerable<Models.FuelType>>(fuelTypes);
+                    var result = mapper.Map<IEnumerable<DB.FuelType>, IEnumerable<Models.ViewModels.FuelType>>(fuelTypes);
                     return (true, result, null);
                 }
                 return (false, null, "Not found");
@@ -54,7 +54,7 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, Models.FuelType FuelType, string ErrorMessage)> GetFuelTypeAsync(int id)
+        public async Task<(bool IsSuccess, Models.ViewModels.FuelType FuelType, string ErrorMessage)> GetFuelTypeAsync(int id)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Rental.API.Vehicles.Providers
 
                 if (fuelType != null)
                 {
-                    var result = mapper.Map<DB.FuelType, Models.FuelType>(fuelType);
+                    var result = mapper.Map<DB.FuelType, Models.ViewModels.FuelType>(fuelType);
                     return (true, result, null);
                 }
                 return (false, null, "Not found");

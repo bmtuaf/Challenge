@@ -1,4 +1,4 @@
-﻿using Rental.API.Vehicles.Models;
+﻿using Rental.API.Vehicles.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

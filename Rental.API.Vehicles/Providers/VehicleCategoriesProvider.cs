@@ -36,14 +36,14 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, IEnumerable<Models.VehicleCategory> VehicleCategories, string ErrorMessage)> GetVehicleCategoriesAsync()
+        public async Task<(bool IsSuccess, IEnumerable<Models.ViewModels.VehicleCategory> VehicleCategories, string ErrorMessage)> GetVehicleCategoriesAsync()
         {
             try
             {
                 var vehicleCategories = await dBContext.VehicleCategories.ToListAsync();
                 if (vehicleCategories != null && vehicleCategories.Any())
                 {
-                    var result = mapper.Map<IEnumerable<DB.VehicleCategory>, IEnumerable<Models.VehicleCategory>>(vehicleCategories);
+                    var result = mapper.Map<IEnumerable<DB.VehicleCategory>, IEnumerable<Models.ViewModels.VehicleCategory>>(vehicleCategories);
                     return (true, result, null);
                 }
                 return (false, null, "Not found");
@@ -55,7 +55,7 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, Models.VehicleCategory VehicleCategory, string ErrorMessage)> GetVehicleCategoryAsync(int id)
+        public async Task<(bool IsSuccess, Models.ViewModels.VehicleCategory VehicleCategory, string ErrorMessage)> GetVehicleCategoryAsync(int id)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace Rental.API.Vehicles.Providers
 
                 if (vehicleCategory != null)
                 {
-                    var result = mapper.Map<DB.VehicleCategory, Models.VehicleCategory>(vehicleCategory);
+                    var result = mapper.Map<DB.VehicleCategory, Models.ViewModels.VehicleCategory>(vehicleCategory);
                     return (true, result, null);
                 }
                 return (false, null, "Not found");

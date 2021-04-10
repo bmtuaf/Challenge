@@ -45,14 +45,14 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, IEnumerable<Models.CarModel> CarModels, string ErrorMessage)> GetCarModelsAsync()
+        public async Task<(bool IsSuccess, IEnumerable<Models.ViewModels.CarModel> CarModels, string ErrorMessage)> GetCarModelsAsync()
         {
             try
             {
                 var carModels = await dBContext.CarModels.Include(m => m.Make).Include(c => c.VehicleCategory).ToListAsync();
                 if (carModels != null && carModels.Any())
                 {
-                    var result = mapper.Map<IEnumerable<DB.CarModel>, IEnumerable<Models.CarModel>>(carModels);
+                    var result = mapper.Map<IEnumerable<DB.CarModel>, IEnumerable<Models.ViewModels.CarModel>>(carModels);
                     return (true, result, null);
                 }
                 return (false, null, "Not found");
@@ -64,7 +64,7 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, Models.CarModel CarModel, string ErrorMessage)> GetCarModelAsync(int id)
+        public async Task<(bool IsSuccess, Models.ViewModels.CarModel CarModel, string ErrorMessage)> GetCarModelAsync(int id)
         {
             try
             {
@@ -72,10 +72,84 @@ namespace Rental.API.Vehicles.Providers
 
                 if (carModel != null)
                 {
-                    var result = mapper.Map<DB.CarModel, Models.CarModel>(carModel);
+                    var result = mapper.Map<DB.CarModel, Models.ViewModels.CarModel>(carModel);
                     return (true, result, null);
                 }
                 return (false, null, "Not found");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, Models.ViewModels.CarModel CarModel, string ErrorMessage)> PostCarModelAsync(Models.RequestModels.CarModelRequest carModel)
+        {
+            try
+            {
+                var newCarModel = new DB.CarModel()
+                {
+                    MakeID = carModel.MakeID,
+                    Name = carModel.Name,
+                    VehicleCategoryID = carModel.VehicleCategoryID
+                };
+                dBContext.Add(newCarModel);
+                if (await dBContext.SaveChangesAsync() > 0)
+                {
+                    newCarModel = await dBContext.CarModels.Include(m => m.Make).Include(c => c.VehicleCategory).FirstOrDefaultAsync(m => m.ID == newCarModel.ID);
+                    var result = mapper.Map<DB.CarModel, Models.ViewModels.CarModel>(newCarModel);
+                    return (true, result, null);
+                }
+                return (false, null, "Failed to insert record.");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, Models.ViewModels.CarModel CarModel, string ErrorMessage)> DeleteCarModelAsync(int id)
+        {
+            try
+            {
+                var carModel = new DB.CarModel() { ID = id };
+                dBContext.Remove(carModel);
+                if (await dBContext.SaveChangesAsync() > 0)
+                {
+                    return (true, null, null);
+                }
+                return (false, null, "Failed to delete record.");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, Models.ViewModels.CarModel CarModel, string ErrorMessage)> PutCarModelAsync(Models.RequestModels.CarModelUpdateRequest carModel)
+        {
+            try
+            {
+                var entity = await dBContext.CarModels.FirstOrDefaultAsync(m => m.ID == carModel.ID);
+                if (entity != null)
+                {
+                    entity.Name = carModel.Name;
+                    entity.MakeID = carModel.MakeID;
+                    entity.VehicleCategoryID = carModel.VehicleCategoryID;
+
+                    dBContext.Update(entity);
+                    if (await dBContext.SaveChangesAsync() > 0)
+                    {
+                        var result = mapper.Map<DB.CarModel, Models.ViewModels.CarModel>(entity);
+                        return (true, result, null);
+                    }
+                    return (false, null, "Failed to update record.");
+                }
+                return (false, null, "Montadora não encontrada.");
+
             }
             catch (Exception ex)
             {

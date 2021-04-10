@@ -40,14 +40,14 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, IEnumerable<Models.Make> Makes, string ErrorMessage)> GetMakesAsync()
+        public async Task<(bool IsSuccess, IEnumerable<Models.ViewModels.Make> Makes, string ErrorMessage)> GetMakesAsync()
         {
             try
             {
                 var makes = await dBContext.Makes.ToListAsync();
                 if (makes != null && makes.Any())
                 {
-                    var result = mapper.Map<IEnumerable<DB.Make>, IEnumerable<Models.Make>>(makes);
+                    var result = mapper.Map<IEnumerable<DB.Make>, IEnumerable<Models.ViewModels.Make>>(makes);
                     return (true, result, null);
                 }
                 return (false, null, "Not found");
@@ -59,7 +59,7 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, Models.Make Make, string ErrorMessage)> GetMakeAsync(int id)
+        public async Task<(bool IsSuccess, Models.ViewModels.Make Make, string ErrorMessage)> GetMakeAsync(int id)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Rental.API.Vehicles.Providers
 
                 if (make != null)
                 {
-                    var result = mapper.Map<DB.Make, Models.Make>(make);
+                    var result = mapper.Map<DB.Make, Models.ViewModels.Make>(make);
                     return (true, result, null);
                 }
                 return (false, null, "Not found");
@@ -79,15 +79,15 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, Models.Make Make, string ErrorMessage)> PostMakeAsync(string name)
+        public async Task<(bool IsSuccess, Models.ViewModels.Make Make, string ErrorMessage)> PostMakeAsync(Models.RequestModels.MakeRequest make)
         {
             try
             {
-                var make = new DB.Make() { Name = name };
-                dBContext.Add(make);                
+                var newMake = new DB.Make() { Name = make.Name };
+                dBContext.Add(newMake);                
                 if (await dBContext.SaveChangesAsync() > 0)
                 {
-                    var result = mapper.Map<DB.Make, Models.Make>(make);
+                    var result = mapper.Map<DB.Make, Models.ViewModels.Make>(newMake);
                     return (true, result, null);
                 }
                 return (false, null, "Failed to insert record.");
@@ -99,7 +99,7 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, Models.Make Make, string ErrorMessage)> DeleteMakeAsync(int id)
+        public async Task<(bool IsSuccess, Models.ViewModels.Make Make, string ErrorMessage)> DeleteMakeAsync(int id)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Rental.API.Vehicles.Providers
             }
         }
 
-        public async Task<(bool IsSuccess, Models.Make Make, string ErrorMessage)> PutMakeAsync(Models.Make make)
+        public async Task<(bool IsSuccess, Models.ViewModels.Make Make, string ErrorMessage)> PutMakeAsync(Models.RequestModels.MakeUpdateRequest make)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace Rental.API.Vehicles.Providers
                     dBContext.Update(entity);
                     if (await dBContext.SaveChangesAsync() > 0)
                     {
-                        var result = mapper.Map<DB.Make, Models.Make>(entity);
+                        var result = mapper.Map<DB.Make, Models.ViewModels.Make>(entity);
                         return (true, result, null);
                     }
                     return (false, null, "Failed to update record.");

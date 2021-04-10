@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
-using Rental.API.Vehicles.Models;
+using Rental.API.Vehicles.Models.RequestModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +42,7 @@ namespace Rental.API.Vehicles.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> GetMakeAsync(string name)
+        public async Task<IActionResult> PostMakeAsync(MakeRequest name)
         {
             var result = await makesProvider.PostMakeAsync(name);
             if (result.IsSuccess)
@@ -64,7 +64,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutMakeAsync([FromBody] Make make)
+        public async Task<IActionResult> PutMakeAsync(MakeUpdateRequest make)
         {
             var result = await makesProvider.PutMakeAsync(make);
             if (result.IsSuccess)

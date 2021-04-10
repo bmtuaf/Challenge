@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
-using Rental.API.Vehicles.Models;
+using Rental.API.Vehicles.Models.RequestModels;
+using Rental.API.Vehicles.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,39 @@ namespace Rental.API.Vehicles.Controllers
         public async Task<IActionResult> GetCarModelAsync(int id)
         {
             var result = await carModelsProvider.GetCarModelAsync(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.CarModel);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostCarModelAsync(CarModelRequest carModel)
+        {
+            var result = await carModelsProvider.PostCarModelAsync(carModel);
+            if (result.IsSuccess)
+            {
+                return Ok(result.CarModel);
+            }
+            return NotFound();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCarModelAsync(int id)
+        {
+            var result = await carModelsProvider.DeleteCarModelAsync(id);
+            if (result.IsSuccess)
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutCarModelAsync(CarModelUpdateRequest carModel)
+        {
+            var result = await carModelsProvider.PutCarModelAsync(carModel);
             if (result.IsSuccess)
             {
                 return Ok(result.CarModel);

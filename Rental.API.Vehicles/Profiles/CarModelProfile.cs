@@ -9,7 +9,7 @@ namespace Rental.API.Vehicles.Profiles
     {
         public CarModelProfile()
         {
-            CreateMap<DB.CarModel, Models.CarModel>();
+            CreateMap<DB.CarModel, Models.ViewModels.CarModel>();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Rental.API.Vehicles.Profiles
     {
         public FuelTypeProfile()
         {
-            CreateMap<DB.FuelType, Models.FuelType>();
+            CreateMap<DB.FuelType, Models.ViewModels.FuelType>();
         }
     }
 }
