@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Rental.API.Vehicles.DB;
 using Rental.API.Vehicles.Interfaces;
-using Rental.API.Vehicles.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

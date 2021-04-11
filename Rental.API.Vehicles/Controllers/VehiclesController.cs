@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
-using Rental.API.Vehicles.Models;
 using Rental.API.Vehicles.Models.RequestModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Controllers

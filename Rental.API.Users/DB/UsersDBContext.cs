@@ -1,15 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Rental.API.Users.DB
 {
-    public class UsersDBContext : DbContext
+    public class UsersDBContext : IdentityDbContext<User>
     {
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Operator> Operators { get; set; }
+        public DbSet<User> Users { get; set; }        
         public UsersDBContext(DbContextOptions options) : base (options)
         {
 

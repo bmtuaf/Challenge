@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Rental.API.Vehicles.Models.RequestModels
+﻿namespace Rental.API.Vehicles.Models.RequestModels
 {
     public class VehicleUpdateRequest
     {

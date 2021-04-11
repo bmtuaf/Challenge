@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace Rental.API.Users.DB
 {
-    public class Customer
-    {
-        [Key]
+    public class User : IdentityUser
+    {       
         public string CPF { get; set; }
         public string Name { get; set; }
         public DateTime Birthday { get; set; }
@@ -18,6 +14,6 @@ namespace Rental.API.Users.DB
         public string AdditionalInformation { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string PasswordHash { get; set; }
+        public string RegistrationNumber { get; set; }        
     }
 }

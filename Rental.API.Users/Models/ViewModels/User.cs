@@ -2,7 +2,7 @@
 
 namespace Rental.API.Users.Models.ViewModels
 {
-    public class Customer
+    public class User
     {        
         public string CPF { get; set; }
         public string Name { get; set; }

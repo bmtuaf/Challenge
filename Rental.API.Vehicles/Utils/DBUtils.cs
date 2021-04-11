@@ -1,11 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using Rental.API.Vehicles.DB;
-using Rental.API.Vehicles.Interfaces;
-using Rental.API.Vehicles.Providers;
-using System;
-using System.Collections.Generic;
+﻿using Rental.API.Vehicles.DB;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Utils
 {

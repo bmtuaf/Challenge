@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Rental.API.Users.Models.RequestModels
 {
@@ -16,6 +13,6 @@ namespace Rental.API.Users.Models.RequestModels
         public string AdditionalInformation { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
     }
 }
