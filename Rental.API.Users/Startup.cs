@@ -33,6 +33,7 @@ namespace Rental.API.Users
             services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<ICustomersProvider, CustomerProvider>();
+            services.AddScoped<IOperatorProvider, OperatorProvider>();
 
             services.AddDbContext<UsersDBContext>(options => 
             {

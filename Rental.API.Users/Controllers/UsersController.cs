@@ -10,11 +10,12 @@ namespace Rental.API.Users.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ICustomersProvider customersProvider;
-        
+        private readonly IOperatorProvider operatorProvider;
 
-        public UsersController(ICustomersProvider customersProvider)
+        public UsersController(ICustomersProvider customersProvider, IOperatorProvider operatorProvider)
         {
             this.customersProvider = customersProvider;
+            this.operatorProvider = operatorProvider;
         }
 
         [HttpPost("create/customer")]
@@ -24,24 +25,55 @@ namespace Rental.API.Users.Controllers
 
             if (result.IsSuccess)
             {
-                return Ok(result.Customer);
+                return Ok(result);
             }
 
-            return NotFound();
+            return BadRequest(result);
         }
 
-        [HttpPost("login/user")]
+        [HttpPost("login")]
         public async Task<IActionResult> LoginUser([FromBody] LoginRequest login)
         {
-            var result = await customersProvider.PostLoginAsync(login);
+            switch (login.UserType)
+            {
+                case 'C':
+                    var result = await customersProvider.PostLoginAsync(login);
+                    
+                    if (result.IsSuccess)
+                    {
+                        return Ok(result);
+                    }
+
+                    return BadRequest(result); 
+                    
+                case 'O':
+                    var resultOperator = await operatorProvider.PostLoginAsync(login);
+                    
+                    if (resultOperator.IsSuccess)
+                    {
+                        return Ok(resultOperator);
+                    }
+
+                    return BadRequest(resultOperator);
+
+                default:
+                    return BadRequest();
+            }
+        }
+
+        [HttpPost("create/operator")]
+        public async Task<IActionResult> RegisterOperator ([FromBody] OperatorRequest operatorRequest)
+        {
+            var result = await operatorProvider.PostOperatorAsync(operatorRequest);
 
             if (result.IsSuccess)
             {
-                return Ok(result.Customer);
+                return Ok(result);
             }
 
-            return NotFound();
+            return BadRequest(result);
         }
+
 
         //[HttpPost("create/operator")]
         //public async Task<IActionResult> RegisterOperator([FromBody] OperatorRequest operatorRequest)

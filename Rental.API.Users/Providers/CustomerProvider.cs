@@ -26,25 +26,26 @@ namespace Rental.API.Users.Providers
         private readonly UserManager<DB.User> userManager;
         private readonly JwtSettings jwtSettings;
 
-        public CustomerProvider(UsersDBContext dBContext, ILogger<CustomerProvider> logger, IMapper mapper, UserManager<DB.User> userManager)
+        public CustomerProvider(UsersDBContext dBContext, ILogger<CustomerProvider> logger, IMapper mapper, UserManager<DB.User> userManager, JwtSettings jwtSettings)
         {
             this.dBContext = dBContext;
             this.logger = logger;
             this.mapper = mapper;
             this.userManager = userManager;
+            this.jwtSettings = jwtSettings;
         }
 
-        public async Task<(bool IsSuccess, Models.ViewModels.User Customer, string ErrorMessage)> DeleteCustomerAsync(int id)
+        public Task<(bool IsSuccess, Customer Customer, string ErrorMessage)> DeleteCustomerAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<(bool IsSuccess, Models.ViewModels.User Customer, string ErrorMessage)> GetCustomerAsync(string cpf)
+        public Task<(bool IsSuccess, Customer Customer, string ErrorMessage)> GetCustomerAsync(string cpf)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<(bool IsSuccess, IEnumerable<Models.ViewModels.User> Vehicles, string ErrorMessage)> GetCustomersAsync()
+        public Task<(bool IsSuccess, IEnumerable<Customer> Customers, string ErrorMessage)> GetCustomersAsync()
         {
             throw new NotImplementedException();
         }
@@ -96,23 +97,6 @@ namespace Rental.API.Users.Providers
                     };                    
                 }
 
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new[]
-                    {
-                        new Claim(JwtRegisteredClaimNames.Sub, newCustomer.CPF),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Email, newCustomer.Email),
-                        new Claim("Id", newCustomer.Id)
-                    }),
-                    Expires = DateTime.UtcNow.AddHours(2),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey (key), SecurityAlgorithms.HmacSha256Signature)
-                };
-
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-
                 var createdCustomer = await dBContext.Users.FirstOrDefaultAsync(c => c.CPF == customer.CPF);
                 var resultCustomer = mapper.Map<DB.User, Models.ViewModels.Customer>(createdCustomer);
 
@@ -121,7 +105,7 @@ namespace Rental.API.Users.Providers
                     IsSuccess = true,
                     Customer = resultCustomer,
                     ErrorMessage = null,
-                    Token = tokenHandler.WriteToken(token)
+                    Token = TokenGenerator(newCustomer)
                 };                
             }
             catch (Exception ex)
@@ -138,9 +122,66 @@ namespace Rental.API.Users.Providers
             
         }
 
-        public Task<AuthenticationCustomerResult> PostLoginAsync(LoginRequest login)
+        public async Task<AuthenticationCustomerResult> PostLoginAsync(LoginRequest login)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByNameAsync(login.UserName);
+
+            if (user == null)
+            {
+                return new AuthenticationCustomerResult
+                {
+                    IsSuccess = false,
+                    Customer = null,
+                    ErrorMessage = "Usuário ou senha incorretos",
+                    Token = null
+                };
+            }
+
+            var userHasValidPassword = await userManager.CheckPasswordAsync(user, login.Password);
+
+            if (!userHasValidPassword)
+            {
+                return new AuthenticationCustomerResult
+                {
+                    IsSuccess = false,
+                    Customer = null,
+                    ErrorMessage = "Usuário ou senha incorretos",
+                    Token = null
+                };
+            }
+
+            var result = mapper.Map<DB.User, Models.ViewModels.Customer>(user);
+
+            return new AuthenticationCustomerResult
+            {
+                IsSuccess = true,
+                Customer = result,
+                ErrorMessage = null,
+                Token = TokenGenerator(user)
+            };
+
+        }
+
+        private string TokenGenerator (DB.User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                        new Claim(JwtRegisteredClaimNames.Sub, user.CPF),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                        new Claim("Id", user.Id)
+                    }),
+                Expires = DateTime.UtcNow.AddHours(2),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }

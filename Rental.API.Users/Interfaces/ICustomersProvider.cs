@@ -7,10 +7,10 @@ namespace Rental.API.Users.Interfaces
 {
     public interface ICustomersProvider
     {
-        Task<(bool IsSuccess, IEnumerable<User> Vehicles, string ErrorMessage)> GetCustomersAsync();
-        Task<(bool IsSuccess, User Customer, string ErrorMessage)> GetCustomerAsync(string cpf);
+        Task<(bool IsSuccess, IEnumerable<Customer> Customers, string ErrorMessage)> GetCustomersAsync();
+        Task<(bool IsSuccess, Customer Customer, string ErrorMessage)> GetCustomerAsync(string cpf);
         Task<AuthenticationCustomerResult> PostCustomerAsync(CustomerRequest customer);
-        Task<(bool IsSuccess, User Customer, string ErrorMessage)> DeleteCustomerAsync(int id);
+        Task<(bool IsSuccess, Customer Customer, string ErrorMessage)> DeleteCustomerAsync(int id);
         Task<AuthenticationCustomerResult> PostLoginAsync(LoginRequest login);
     }
 }

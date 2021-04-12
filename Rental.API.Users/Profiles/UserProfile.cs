@@ -4,7 +4,7 @@
     {
         public UserProfile()
         {
-            CreateMap<DB.User, Models.ViewModels.User>();
+            CreateMap<DB.User, Models.ViewModels.Customer>();
             CreateMap<DB.User, Models.ViewModels.Operator>();
         }
     }
