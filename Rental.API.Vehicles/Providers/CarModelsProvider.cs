@@ -29,18 +29,18 @@ namespace Rental.API.Vehicles.Providers
         {
             if (!dBContext.CarModels.Any())
             {
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 1, MakeID = 1, Name = "A3", VehicleCategoryID = 2 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 2, MakeID = 1, Name = "A4", VehicleCategoryID = 2 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 3, MakeID = 2, Name = "M3", VehicleCategoryID = 3 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 4, MakeID = 2, Name = "M5", VehicleCategoryID = 3 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 5, MakeID = 3, Name = "Onix", VehicleCategoryID = 1 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 6, MakeID = 3, Name = "S10", VehicleCategoryID = 2 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 7, MakeID = 4, Name = "Toro", VehicleCategoryID = 2 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 8, MakeID = 4, Name = "Uno", VehicleCategoryID = 1 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 9, MakeID = 5, Name = "Fiesta", VehicleCategoryID = 1 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 10, MakeID = 5, Name = "Focus", VehicleCategoryID = 2 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 11, MakeID = 6, Name = "Jetta", VehicleCategoryID = 2 });
-                dBContext.CarModels.Add(new DB.CarModel() { ID = 12, MakeID = 6, Name = "Tiguan", VehicleCategoryID = 2 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 1, FuelTypeID = 4, RentalPricePerHour = 10, MakeID = 1, Name = "A3", VehicleCategoryID = 2, TrunkLimit = 2});
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 2, FuelTypeID = 1, RentalPricePerHour = 25, MakeID = 1, Name = "A4", VehicleCategoryID = 2, TrunkLimit = 4});
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 3, FuelTypeID = 1, RentalPricePerHour = 40, MakeID = 2, Name = "M3", VehicleCategoryID = 3, TrunkLimit = 4});
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 4, FuelTypeID = 1, RentalPricePerHour = 50, MakeID = 2, Name = "M5", VehicleCategoryID = 3, TrunkLimit = 4 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 5, FuelTypeID = 4, RentalPricePerHour = 7, MakeID = 3, Name = "Onix", VehicleCategoryID = 1, TrunkLimit = 2 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 6, FuelTypeID = 3, RentalPricePerHour = 12, MakeID = 3, Name = "S10", VehicleCategoryID = 2, TrunkLimit = 6 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 7, FuelTypeID = 3, RentalPricePerHour = 12, MakeID = 4, Name = "Toro", VehicleCategoryID = 2, TrunkLimit = 6 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 8, FuelTypeID = 2, RentalPricePerHour = 4, MakeID = 4, Name = "Uno", VehicleCategoryID = 1, TrunkLimit = 1 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 9, FuelTypeID = 4, RentalPricePerHour = 5, MakeID = 5, Name = "Fiesta", VehicleCategoryID = 1, TrunkLimit = 1 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 10, FuelTypeID = 1, RentalPricePerHour = 9, MakeID = 5, Name = "Focus", VehicleCategoryID = 2, TrunkLimit = 3 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 11, FuelTypeID = 1, RentalPricePerHour = 15, MakeID = 6, Name = "Jetta", VehicleCategoryID = 2, TrunkLimit = 4 });
+                dBContext.CarModels.Add(new DB.CarModel() { ID = 12, FuelTypeID = 1, RentalPricePerHour = 20, MakeID = 6, Name = "Tiguan", VehicleCategoryID = 2, TrunkLimit = 6 });
                 dBContext.SaveChanges();
             }
         }
@@ -49,7 +49,7 @@ namespace Rental.API.Vehicles.Providers
         {
             try
             {
-                var carModels = await dBContext.CarModels.Include(m => m.Make).Include(c => c.VehicleCategory).ToListAsync();
+                var carModels = await dBContext.CarModels.Include(m => m.Make).Include(f => f.FuelType).Include(c => c.VehicleCategory).ToListAsync();
                 if (carModels != null && carModels.Any())
                 {
                     var result = mapper.Map<IEnumerable<DB.CarModel>, IEnumerable<Models.ViewModels.CarModel>>(carModels);
@@ -68,7 +68,7 @@ namespace Rental.API.Vehicles.Providers
         {
             try
             {
-                var carModel = await dBContext.CarModels.Include(m => m.Make).Include(c => c.VehicleCategory).FirstOrDefaultAsync(m => m.ID == id);
+                var carModel = await dBContext.CarModels.Include(m => m.Make).Include(f => f.FuelType).Include(c => c.VehicleCategory).FirstOrDefaultAsync(m => m.ID == id);
 
                 if (carModel != null)
                 {
@@ -92,12 +92,15 @@ namespace Rental.API.Vehicles.Providers
                 {
                     MakeID = carModel.MakeID,
                     Name = carModel.Name,
-                    VehicleCategoryID = carModel.VehicleCategoryID
+                    VehicleCategoryID = carModel.VehicleCategoryID,
+                    FuelTypeID = carModel.FuelTypeID,
+                    TrunkLimit = carModel.TrunkLimit,
+                    RentalPricePerHour = carModel.RentalPricePerHour
                 };
                 dBContext.Add(newCarModel);
                 if (await dBContext.SaveChangesAsync() > 0)
                 {
-                    newCarModel = await dBContext.CarModels.Include(m => m.Make).Include(c => c.VehicleCategory).FirstOrDefaultAsync(m => m.ID == newCarModel.ID);
+                    newCarModel = await dBContext.CarModels.Include(m => m.Make).Include(c => c.VehicleCategory).Include(f => f.FuelType).FirstOrDefaultAsync(m => m.ID == newCarModel.ID);
                     var result = mapper.Map<DB.CarModel, Models.ViewModels.CarModel>(newCarModel);
                     return (true, result, null);
                 }
@@ -139,6 +142,9 @@ namespace Rental.API.Vehicles.Providers
                     entity.Name = carModel.Name;
                     entity.MakeID = carModel.MakeID;
                     entity.VehicleCategoryID = carModel.VehicleCategoryID;
+                    entity.RentalPricePerHour = carModel.RentalPricePerHour;
+                    entity.FuelTypeID = carModel.FuelTypeID;
+                    entity.TrunkLimit = carModel.TrunkLimit;
 
                     dBContext.Update(entity);
                     if (await dBContext.SaveChangesAsync() > 0)
