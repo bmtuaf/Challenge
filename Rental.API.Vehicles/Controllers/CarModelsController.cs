@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
 using Rental.API.Vehicles.Models.RequestModels;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Controllers
@@ -9,11 +13,11 @@ namespace Rental.API.Vehicles.Controllers
     [Route("api/carmodels")]
     public class CarModelsController : ControllerBase
     {
-        private readonly ICarModelsProvider carModelsProvider;
+        private readonly ICarModelsProvider carModelsProvider;        
 
         public CarModelsController(ICarModelsProvider carModelsProvider)
         {
-            this.carModelsProvider = carModelsProvider;
+            this.carModelsProvider = carModelsProvider;            
         }
 
         [HttpGet]
@@ -69,6 +73,28 @@ namespace Rental.API.Vehicles.Controllers
                 return Ok(result.CarModel);
             }
             return NotFound();
+        }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> PostCarModelImage([FromForm] IFormFile file, int carModelID)
+        {
+            var result = await carModelsProvider.PostCarModelImageAsync(file, carModelID);
+            if (result.IsSuccess)
+            {
+                return Ok(result.ImagePath);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("{id}/image")]
+        public async Task<IActionResult> GetCarModelImage(int id)
+        {
+            var result = await carModelsProvider.GetCarModelImageAsync(id);
+            if (result.IsSuccess)
+            {
+                return File(result.Image, "image/jpeg");
+            }
+            return BadRequest();
         }
     }
 }
