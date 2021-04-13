@@ -14,6 +14,7 @@ namespace Rental.API.Users.DB
         public string AdditionalInformation { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string RegistrationNumber { get; set; }        
+        public string RegistrationNumber { get; set; }
+        public string Phone { get; set; }
     }
 }

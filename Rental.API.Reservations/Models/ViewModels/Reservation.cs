@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Rental.API.Reservations.DB
+namespace Rental.API.Reservations.Models.ViewModels
 {
     public class Reservation
     {
@@ -18,6 +18,5 @@ namespace Rental.API.Reservations.DB
         public bool IsFuelTankFull { get; set; }
         public bool IsCarDamaged { get; set; }
         public decimal RentalPricePerHourAfterReturn { get; set; }
-
     }
 }

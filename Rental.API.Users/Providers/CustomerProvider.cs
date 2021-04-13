@@ -81,7 +81,8 @@ namespace Rental.API.Users.Providers
                     State = customer.State,
                     City = customer.City,
                     UserName = customer.CPF,
-                    Email = customer.Email
+                    Email = customer.Email,
+                    Phone = customer.Phone
                 };
 
                 var createdUser = await userManager.CreateAsync(newCustomer, customer.Password);

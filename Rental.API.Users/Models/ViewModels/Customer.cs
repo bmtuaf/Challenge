@@ -12,6 +12,7 @@ namespace Rental.API.Users.Models.ViewModels
         public int AddressNumber { get; set; }
         public string AdditionalInformation { get; set; }
         public string City { get; set; }
-        public string State { get; set; }        
+        public string State { get; set; }
+        public string Phone { get; set; }
     }
 }
