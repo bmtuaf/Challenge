@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Rental.API.Users.DB;
 using Rental.API.Users.Interfaces;
 using Rental.API.Users.Providers;
-using Rental.API.Users.Utils;
 using System.Collections.Generic;
 using Rental.API.Users.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -102,8 +101,6 @@ namespace Rental.API.Users
                     }
                 });
             });
-
-            //InitializeDB(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -129,21 +126,6 @@ namespace Rental.API.Users
             {
                 endpoints.MapControllers();
             });
-        }
-
-        private void InitializeDB(IServiceCollection services)
-        {
-            var sp = services.BuildServiceProvider();
-
-            using (var scope = sp.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<UsersDBContext>();
-
-                db.Database.EnsureCreated();
-
-                DBUtils.SeedData(db);
-            }
         }
     }
 }

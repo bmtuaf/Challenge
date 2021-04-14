@@ -90,6 +90,44 @@ namespace Rental.API.Reservations.Providers
             }
         }
 
+        public async Task<(bool IsSuccess, IEnumerable<Models.ViewModels.Reservation> Reservations, string ErrorMessage)> GetUsersActiveReservationsAsync(string cpf)
+        {
+            try
+            {
+                var reservations = await dBContext.Reservations.Where(r => r.CPF == cpf && r.IsCarReturned == false).ToListAsync();
+                if (reservations != null && reservations.Any())
+                {
+                    var result = mapper.Map<IEnumerable<DB.Reservation>, IEnumerable<Models.ViewModels.Reservation>>(reservations);
+                    return (true, result, null);
+                }
+                return (false, null, "Not found");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, IEnumerable<Models.ViewModels.Reservation> Reservations, string ErrorMessage)> GetUsersHistoricalReservationsAsync(string cpf)
+        {
+            try
+            {
+                var reservations = await dBContext.Reservations.Where(r => r.CPF == cpf && r.IsCarReturned == true).ToListAsync();
+                if (reservations != null && reservations.Any())
+                {
+                    var result = mapper.Map<IEnumerable<DB.Reservation>, IEnumerable<Models.ViewModels.Reservation>>(reservations);
+                    return (true, result, null);
+                }
+                return (false, null, "Not found");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
         public async Task<(bool IsSuccess, Models.ViewModels.Reservation Reservation, string ErrorMessage)> PostReservationAsync(ReservationRequest reservation)
         {
             try

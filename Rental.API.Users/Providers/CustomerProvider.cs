@@ -33,6 +33,77 @@ namespace Rental.API.Users.Providers
             this.mapper = mapper;
             this.userManager = userManager;
             this.jwtSettings = jwtSettings;
+            SeedData();
+        }
+
+        private async void SeedData()
+        {
+            if (!dBContext.Users.Any())
+            {
+                var customer = new DB.User()
+                {
+                    CPF = "00000000000",
+                    Name = "Bernardo",
+                    Birthday = new DateTime(1987, 1, 1),
+                    CEP = "80530908",
+                    City = "Curitiba",
+                    State = "PR",
+                    Address = "Av Candido de Abreu",
+                    AddressNumber = 817,
+                    AdditionalInformation = "N/A",
+                    UserName = "00000000000"
+                };
+                await userManager.CreateAsync(customer, "Abc123!");
+                var customer1 = new DB.User()
+                {
+                    CPF = "00000000001",
+                    Name = "Andre",
+                    Birthday = new DateTime(1989, 1, 1),
+                    CEP = "31150900",
+                    City = "Belo Horizonte",
+                    State = "MG",
+                    Address = "Av. Bernardo de Vasconcelos",
+                    AddressNumber = 377,
+                    AdditionalInformation = "N/A",
+                    UserName = "00000000001"
+                };
+                await userManager.CreateAsync(customer1, "Abc123!");
+                var customer2 = new DB.User()
+                {
+                    CPF = "00000000002",
+                    Name = "Glaydersen",
+                    Birthday = new DateTime(1989, 1, 1),
+                    CEP = "31150900",
+                    City = "Belo Horizonte",
+                    State = "MG",
+                    Address = "Av. Bernardo de Vasconcelos",
+                    AddressNumber = 377,
+                    AdditionalInformation = "N/A",
+                    UserName = "00000000002"
+                };
+                await userManager.CreateAsync(customer2, "Abc123!");
+                var customer3 = new DB.User()
+                {
+                    RegistrationNumber = "1000",
+                    Name = "Bernardo Operador",
+                    UserName = "1000"
+                };
+                await userManager.CreateAsync(customer3, "Abc123!");
+                var customer4 = new DB.User()
+                {
+                    RegistrationNumber = "1001",
+                    Name = "Andre Operador",
+                    UserName = "1001"
+                };
+                await userManager.CreateAsync(customer4, "Abc123!");
+                var customer5 = new DB.User()
+                {
+                    RegistrationNumber = "1002",
+                    Name = "Glaydersen Operador",
+                    UserName = "1002"
+                };
+                await userManager.CreateAsync(customer5, "Abc123!");
+            }
         }
 
         public Task<(bool IsSuccess, Customer Customer, string ErrorMessage)> DeleteCustomerAsync(int id)
@@ -54,7 +125,7 @@ namespace Rental.API.Users.Providers
         {
             try
             {
-                var existingUser = await userManager.FindByIdAsync(customer.CPF);
+                var existingUser = await userManager.FindByNameAsync(customer.CPF);
 
                 if (existingUser != null)
                 {
@@ -127,7 +198,7 @@ namespace Rental.API.Users.Providers
         {
             var user = await userManager.FindByNameAsync(login.UserName);
 
-            if (user == null)
+            if (user == null || user.CPF == null)
             {
                 return new AuthenticationCustomerResult
                 {
@@ -173,7 +244,6 @@ namespace Rental.API.Users.Providers
                 {
                         new Claim(JwtRegisteredClaimNames.Sub, user.CPF),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Email, user.Email),
                         new Claim("Id", user.Id)
                     }),
                 Expires = DateTime.UtcNow.AddHours(2),

@@ -41,6 +41,28 @@ namespace Rental.API.Reservations.Controllers
             return NotFound();
         }
 
+        [HttpGet("user/active/{cpf}")]
+        public async Task<IActionResult> GetUsersActiveReservationsAsync(string cpf)
+        {
+            var result = await reservationsProvider.GetUsersActiveReservationsAsync(cpf);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Reservations);
+            }
+            return NotFound();
+        }
+
+        [HttpGet("user/historical/{cpf}")]
+        public async Task<IActionResult> GetUsersHistoricalReservationsAsync(string cpf)
+        {
+            var result = await reservationsProvider.GetUsersHistoricalReservationsAsync(cpf);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Reservations);
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostReservationAsync(ReservationRequest request)
         {

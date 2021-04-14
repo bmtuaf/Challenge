@@ -54,7 +54,7 @@ namespace Rental.API.Users.Providers
         {
             var user = await userManager.FindByNameAsync(login.UserName);
 
-            if (user == null)
+            if (user == null || user.RegistrationNumber == null)
             {
                 return new AuthenticationOperatorResult
                 {
