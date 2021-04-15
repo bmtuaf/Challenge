@@ -1,9 +1,7 @@
 ﻿using Rental.API.Orchestrator.Interfaces;
 using Rental.API.Orchestrator.Models.RequestModels;
 using Rental.API.Orchestrator.Models.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rental.API.Orchestrator.Services

@@ -4,7 +4,6 @@ using Rental.API.Orchestrator.Models.RequestModels;
 using Rental.API.Orchestrator.Models.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;

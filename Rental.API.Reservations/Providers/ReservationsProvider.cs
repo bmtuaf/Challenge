@@ -38,6 +38,12 @@ namespace Rental.API.Reservations.Providers
 
                 var result = new NotAvailableVehicles() { LstNotAvailableVehicles = notAvailableVehicles };
 
+                if (notAvailableVehicles != null && !notAvailableVehicles.Any())
+                {
+                    result.LstNotAvailableVehicles = new List<int> { -1 };
+                    return (true, result, null);
+                }
+
                 if (notAvailableVehicles != null && notAvailableVehicles.Any())
                 {                    
                     return (true, result, null);

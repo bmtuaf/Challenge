@@ -244,10 +244,14 @@ namespace Rental.API.Users.Providers
                 {
                         new Claim(JwtRegisteredClaimNames.Sub, user.CPF),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim("Id", user.Id)
+                        new Claim("Id", user.Id),
+                        new Claim("UserName", user.UserName),
+                        new Claim(ClaimTypes.Role, "Customer")
                     }),
                 Expires = DateTime.UtcNow.AddHours(2),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = "https://rentalusersapi.azurewebsites.net",
+                Audience = "https://rentalapigateway.azurewebsites.net"
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

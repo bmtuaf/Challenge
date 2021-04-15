@@ -5,10 +5,7 @@ using Rental.API.Vehicles.DB;
 using Rental.API.Vehicles.Profiles;
 using Rental.API.Vehicles.Providers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Rental.API.Vehicles.Tests
