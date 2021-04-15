@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API.Reservations.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API.Orchestrator", "Rental.API.Search\Rental.API.Orchestrator.csproj", "{03A2F457-F58E-43C2-9D3E-111D7C7DCBDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API.Orchestrator.Tests", "Rental.API.Orchestrator.Tests\Rental.API.Orchestrator.Tests.csproj", "{8F9E9175-5AF1-4935-BF33-F171070E556F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{03A2F457-F58E-43C2-9D3E-111D7C7DCBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03A2F457-F58E-43C2-9D3E-111D7C7DCBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03A2F457-F58E-43C2-9D3E-111D7C7DCBDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F9E9175-5AF1-4935-BF33-F171070E556F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F9E9175-5AF1-4935-BF33-F171070E556F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F9E9175-5AF1-4935-BF33-F171070E556F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F9E9175-5AF1-4935-BF33-F171070E556F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
