@@ -1,0 +1,161 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/users/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalusersapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{everything}",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/carmodels",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/carmodels",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/carmodels/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/carmodels/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/makes",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/makes",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/makes/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/makes/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/fueltypes",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/fueltypes",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/fueltypes/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/fueltypes/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/vehiclecategories",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/vehiclecategories",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/vehiclecategories/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/vehiclecategories/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/vehicles",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/vehicles",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/vehicles/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalvehiclesapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/vehicles/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/reservation",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalorchestratorapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/reservation",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/search/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rentalorchestratorapi.azurewebsites.net",
+          "Port": "443"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/search/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    }
+  ],
+  "GlobalConfiguration": {}
+}
