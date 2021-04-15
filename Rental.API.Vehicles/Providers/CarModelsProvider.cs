@@ -226,5 +226,25 @@ namespace Rental.API.Vehicles.Providers
                 return (false, null, ex.Message);
             }
         }
+
+        public async Task<(bool IsSuccess, IEnumerable<Models.ViewModels.CarModel> CarModels, string ErrorMessage)> GetAvailableCarModelsAsync(List<int> vehiclesNotAvailable)
+        {
+            try
+            {
+                var availableVehicles = await dBContext.Vehicles.Where(v => !vehiclesNotAvailable.Contains(v.ID)).Select(m => m.CarModelID).ToListAsync();
+                var carModels = await dBContext.CarModels.Include(m => m.Make).Include(f => f.FuelType).Include(c => c.VehicleCategory).Where(c => availableVehicles.Contains(c.ID)).OrderBy(c => c.RentalPricePerHour).ToListAsync();
+                if (carModels != null && carModels.Any())
+                {
+                    var result = mapper.Map<IEnumerable<DB.CarModel>, IEnumerable<Models.ViewModels.CarModel>>(carModels);
+                    return (true, result, null);
+                }
+                return (false, null, "Not found");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
     }
 }

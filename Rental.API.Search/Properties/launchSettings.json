@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Rental.API.Search": {
+    "Rental.API.Orchestrator": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

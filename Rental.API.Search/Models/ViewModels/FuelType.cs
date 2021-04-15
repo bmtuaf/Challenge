@@ -1,5 +1,5 @@
 ﻿
-namespace Rental.API.Vehicles.Models.ViewModels
+namespace Rental.API.Orchestrator.Models.ViewModels
 {
     public class FuelType
     {

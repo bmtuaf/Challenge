@@ -5,14 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Rental.API.Search.Interfaces;
-using Rental.API.Search.Services;
+using Rental.API.Orchestrator.Interfaces;
+using Rental.API.Orchestrator.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Rental.API.Search
+namespace Rental.API.Orchestrator
 {
     public class Startup
     {
@@ -28,9 +28,16 @@ namespace Rental.API.Search
         {
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IReservationsService, ReservationsService>();
+            services.AddScoped<IVehiclesService, VehiclesService>();
+            services.AddScoped<IReservationOrchestratorService, ReservationOrchestratorService>();
+
             services.AddHttpClient("ReservationsService", config =>
             {
                 config.BaseAddress = new Uri(Configuration["Services:Reservations"]);
+            });
+            services.AddHttpClient("VehiclesService", config =>
+            {
+                config.BaseAddress = new Uri(Configuration["Services:Vehicles"]);
             });
 
             services.AddControllers();

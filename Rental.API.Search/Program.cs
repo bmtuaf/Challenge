@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Rental.API.Search
+namespace Rental.API.Orchestrator
 {
     public class Program
     {

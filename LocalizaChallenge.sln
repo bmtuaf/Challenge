@@ -9,13 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API.Vehicles", "Rent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API.Reservations", "Rental.API.Reservations\Rental.API.Reservations.csproj", "{C495E9C9-3E7F-4480-BA02-30D7EBC5A5DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API.Vehicles.Tests", "Rental.API.Vehicles.Tests\Rental.API.Vehicles.Tests.csproj", "{12A6B96F-0A32-455A-A56C-9EAC384D3492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API.Vehicles.Tests", "Rental.API.Vehicles.Tests\Rental.API.Vehicles.Tests.csproj", "{12A6B96F-0A32-455A-A56C-9EAC384D3492}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API.Users.Tests", "Rental.API.Users.Tests\Rental.API.Users.Tests.csproj", "{5B7BFE66-574A-48A1-B30D-F6BF8E5C1DA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API.Users.Tests", "Rental.API.Users.Tests\Rental.API.Users.Tests.csproj", "{5B7BFE66-574A-48A1-B30D-F6BF8E5C1DA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API.Reservations.Tests", "Rental.API.Reservations.Tests\Rental.API.Reservations.Tests.csproj", "{33F90E74-C725-4AD6-8F18-5E4CCAFFA271}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API.Reservations.Tests", "Rental.API.Reservations.Tests\Rental.API.Reservations.Tests.csproj", "{33F90E74-C725-4AD6-8F18-5E4CCAFFA271}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API.Search", "Rental.API.Search\Rental.API.Search.csproj", "{03A2F457-F58E-43C2-9D3E-111D7C7DCBDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API.Orchestrator", "Rental.API.Search\Rental.API.Orchestrator.csproj", "{03A2F457-F58E-43C2-9D3E-111D7C7DCBDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

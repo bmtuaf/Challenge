@@ -12,5 +12,6 @@ namespace Rental.API.Vehicles.Interfaces
         Task<(bool IsSuccess, Vehicle Vehicle, string ErrorMessage)> PostVehicleAsync(VehicleRequest vehicle);
         Task<(bool IsSuccess, Vehicle Vehicle, string ErrorMessage)> DeleteVehicleAsync(int id);
         Task<(bool IsSuccess, Vehicle Vehicle, string ErrorMessage)> PutVehicleAsync(VehicleUpdateRequest vehicle);
+        Task<(bool IsSuccess, Vehicle Vehicle, string ErrorMessage)> PostReservationVehicleAsync(VehicleReservationRequest vehicleReservationRequest);
     }
 }

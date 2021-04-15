@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rental.API.Search.Interfaces;
-using Rental.API.Search.Models.RequestModels;
+using Rental.API.Orchestrator.Interfaces;
+using Rental.API.Orchestrator.Models.RequestModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Rental.API.Search.Controllers
+namespace Rental.API.Orchestrator.Controllers
 {
     [ApiController]
     [Route("api/search")]

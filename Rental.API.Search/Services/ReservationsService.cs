@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Rental.API.Search.Interfaces;
-using Rental.API.Search.Models.RequestModels;
-using Rental.API.Search.Models.ViewModels;
+using Rental.API.Orchestrator.Interfaces;
+using Rental.API.Orchestrator.Models.RequestModels;
+using Rental.API.Orchestrator.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Rental.API.Search.Services
+namespace Rental.API.Orchestrator.Services
 {
     public class ReservationsService : IReservationsService
     {
@@ -94,6 +94,34 @@ namespace Rental.API.Search.Services
                 logger.LogError(ex.ToString());
                 return (false, null, ex.Message);
                 
+            }
+        }
+
+        public async Task<(bool IsSuccess, Reservation Reservation, string ErrorMessage)> PostReservationAsync(ReservationPersistRequest reservation)
+        {
+            try
+            {
+                var requestContent = JsonSerializer.Serialize(reservation);
+                var buffer = System.Text.Encoding.UTF8.GetBytes(requestContent);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                var client = httpClientFactory.CreateClient("ReservationsService");
+                var response = await client.PostAsync($"api/reservations", byteContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsByteArrayAsync();
+                    var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+                    var result = JsonSerializer.Deserialize<Reservation>(content, options);
+                    return (true, result, null);
+                }
+                return (false, null, response.ReasonPhrase);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.ToString());
+                return (false, null, ex.Message);
+
             }
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Rental.API.Search.Models.ViewModels
+namespace Rental.API.Orchestrator.Models.ViewModels
 {
     public class Reservation
     {

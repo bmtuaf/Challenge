@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
 using Rental.API.Vehicles.Models.RequestModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Controllers
@@ -31,6 +32,17 @@ namespace Rental.API.Vehicles.Controllers
         public async Task<IActionResult> GetVehicleAsync(int id)
         {
             var result = await vehicleProvider.GetVehicleAsync(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Vehicle);
+            }
+            return NotFound();
+        }
+
+        [HttpPost("reservationvehicle")]
+        public async Task<IActionResult> PostReservationVehicleAsync(VehicleReservationRequest vehicleReservationRequest)
+        {
+            var result = await vehicleProvider.PostReservationVehicleAsync(vehicleReservationRequest);
             if (result.IsSuccess)
             {
                 return Ok(result.Vehicle);

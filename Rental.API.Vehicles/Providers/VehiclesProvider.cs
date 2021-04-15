@@ -48,7 +48,7 @@ namespace Rental.API.Vehicles.Providers
         {
             try
             {
-                var vehicles = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).ToListAsync();
+                var vehicles = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(c => c.CarModel.FuelType).ToListAsync();
                 if (vehicles != null && vehicles.Any())
                 {
                     var result = mapper.Map<IEnumerable<DB.Vehicle>, IEnumerable<Models.ViewModels.Vehicle>>(vehicles);
@@ -67,7 +67,7 @@ namespace Rental.API.Vehicles.Providers
         {
             try
             {
-                var vehicle = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).FirstOrDefaultAsync(v => v.ID == id);
+                var vehicle = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(c => c.CarModel.FuelType).FirstOrDefaultAsync(v => v.ID == id);
 
                 if (vehicle != null)
                 {
@@ -96,7 +96,7 @@ namespace Rental.API.Vehicles.Providers
                 dBContext.Add(newVehicle);
                 if (await dBContext.SaveChangesAsync() > 0)
                 {
-                    newVehicle = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).FirstOrDefaultAsync(v => v.ID == newVehicle.ID);
+                    newVehicle = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(c => c.CarModel.FuelType).FirstOrDefaultAsync(v => v.ID == newVehicle.ID);
                     var result = mapper.Map<DB.Vehicle, Models.ViewModels.Vehicle>(newVehicle);
                     return (true, result, null);
                 }
@@ -143,7 +143,7 @@ namespace Rental.API.Vehicles.Providers
 
                     if (await dBContext.SaveChangesAsync() > 0)
                     {
-                        entity = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).FirstOrDefaultAsync(v => v.ID == entity.ID);
+                        entity = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(c => c.CarModel.FuelType).FirstOrDefaultAsync(v => v.ID == entity.ID);
                         var result = mapper.Map<DB.Vehicle, Models.ViewModels.Vehicle>(entity);
                         return (true, result, null);
                     }
@@ -151,6 +151,26 @@ namespace Rental.API.Vehicles.Providers
                 }
                 return (false, null, "Montadora não encontrada.");
 
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, Models.ViewModels.Vehicle Vehicle, string ErrorMessage)> PostReservationVehicleAsync(VehicleReservationRequest vehicleReservationRequest)
+        {
+            try
+            {
+                var vehicle = await dBContext.Vehicles.Include(m => m.CarModel).Include(m => m.CarModel.Make).Include(m => m.CarModel.VehicleCategory).Include(c => c.CarModel.FuelType).Where(c => c.CarModelID == vehicleReservationRequest.CarModelID).FirstOrDefaultAsync(v => !vehicleReservationRequest.notAvailableVehicles.Contains(v.ID));
+
+                if (vehicle != null)
+                {
+                    var result = mapper.Map<DB.Vehicle, Models.ViewModels.Vehicle>(vehicle);
+                    return (true, result, null);
+                }
+                return (false, null, "Not found");
             }
             catch (Exception ex)
             {

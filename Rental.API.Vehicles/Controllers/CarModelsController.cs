@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
 using Rental.API.Vehicles.Models.RequestModels;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -95,6 +96,17 @@ namespace Rental.API.Vehicles.Controllers
                 return File(result.Image, "image/jpeg");
             }
             return BadRequest();
+        }
+
+        [HttpPost("availablemodels")]
+        public async Task<IActionResult> GetAvailableCarModelsAsync(List<int> vehiclesNotAvailable)
+        {
+            var result = await carModelsProvider.GetAvailableCarModelsAsync(vehiclesNotAvailable);
+            if (result.IsSuccess)
+            {
+                return Ok(result.CarModels);
+            }
+            return NotFound();
         }
     }
 }

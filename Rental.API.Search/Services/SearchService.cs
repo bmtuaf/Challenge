@@ -1,19 +1,21 @@
-﻿using Rental.API.Search.Interfaces;
-using Rental.API.Search.Models.RequestModels;
+﻿using Rental.API.Orchestrator.Interfaces;
+using Rental.API.Orchestrator.Models.RequestModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Rental.API.Search.Services
+namespace Rental.API.Orchestrator.Services
 {
     public class SearchService : ISearchService
     {
         private readonly IReservationsService reservationsService;
+        private readonly IVehiclesService vehiclesService;
 
-        public SearchService(IReservationsService reservationsService)
+        public SearchService(IReservationsService reservationsService, IVehiclesService vehiclesService)
         {
             this.reservationsService = reservationsService;
+            this.vehiclesService = vehiclesService;
         }
 
         public async Task<(bool IsSuccess, dynamic SearchResults)> SearchUserActiveReservationsAsync(SearchUserReservation search)
@@ -47,13 +49,13 @@ namespace Rental.API.Search.Services
         public async Task<(bool IsSuccess, dynamic SearchResults)> SearchVehiclesAvailableAsync(SearchVehicleAvailability search)
         {
             var notAvailableResults = await reservationsService.GetNotAvailableVehiclesAsync(search);
+            var availableModels = await vehiclesService.GetAvailableCarModelsAsync(notAvailableResults.VehiclesNotAvailable.LstNotAvailableVehicles);
             if (notAvailableResults.IsSuccess)
             {
                 var result = new
                 {
-                    //Fix
-                    //Add logic for available cars
-                    VehiclesNotAvailable = notAvailableResults.VehiclesNotAvailable
+                    TotalRentalHours = (search.EndDate - search.StartDate).TotalHours,
+                    AvailableModels = availableModels.AvailableCarModels
                 };
                 return (true, result);
             }
