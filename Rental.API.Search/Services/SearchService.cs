@@ -1,5 +1,6 @@
 ﻿using Rental.API.Orchestrator.Interfaces;
 using Rental.API.Orchestrator.Models.RequestModels;
+using Rental.API.Orchestrator.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,8 +50,16 @@ namespace Rental.API.Orchestrator.Services
         public async Task<(bool IsSuccess, dynamic SearchResults)> SearchVehiclesAvailableAsync(SearchVehicleAvailability search)
         {
             var notAvailableResults = await reservationsService.GetNotAvailableVehiclesAsync(search);
+
+            if (!notAvailableResults.IsSuccess)
+            {
+                notAvailableResults.VehiclesNotAvailable = new NotAvailableVehicles();
+                notAvailableResults.VehiclesNotAvailable.LstNotAvailableVehicles = new List<int> { -1 };
+            }
+            
             var availableModels = await vehiclesService.GetAvailableCarModelsAsync(notAvailableResults.VehiclesNotAvailable.LstNotAvailableVehicles);
-            if (notAvailableResults.IsSuccess)
+            
+            if (availableModels.IsSuccess)
             {
                 var result = new
                 {
