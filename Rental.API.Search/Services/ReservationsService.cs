@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Rental.API.Orchestrator.Interfaces;
 using Rental.API.Orchestrator.Models.RequestModels;
 using Rental.API.Orchestrator.Models.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -15,7 +16,7 @@ namespace Rental.API.Orchestrator.Services
     public class ReservationsService : IReservationsService
     {
         private readonly IHttpClientFactory httpClientFactory;
-        private readonly ILogger<ReservationsService> logger;
+        private readonly ILogger<ReservationsService> logger;        
 
         public ReservationsService(IHttpClientFactory httpClientFactory, ILogger<ReservationsService> logger)
         {
@@ -78,6 +79,9 @@ namespace Rental.API.Orchestrator.Services
         {
             try
             {
+                
+                //var authenticateInfo = await AuthenticationHttpContextExtensions.GetTokenAsync(,"Bearer");
+                //string accessToken = authenticateInfo..Properties.Items[".Token.access_token"];
                 var client = httpClientFactory.CreateClient("ReservationsService");
                 var response = await client.GetAsync($"api/reservations/user/active/{search.CPF}");
                 if (response.IsSuccessStatusCode)

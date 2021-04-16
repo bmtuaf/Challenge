@@ -1,16 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 
 namespace Rental.API.Users.Tests
 {
     public class OperatorProviderTest
     {
         [Fact]
-        public void Test()
+        public void PostOperatorLoginAsyncValidUserAndPassword()
+        {
+
+        }
+        [Fact]
+        public void PostOperatorLoginAsyncValidUserInvalidPassword()
+        {
+
+        }
+        [Fact]
+        public void PostOperatorLoginAsyncInalidUserValidPassword()
+        {
+
+        }
+        [Fact]
+        public void PostOperatorLoginAsyncInvalidUserInvalidPassword()
+        {
+
+        }
+        [Fact]
+        public void PostOperatorAsyncValidPassword()
+        {
+
+        }
+        [Fact]
+        public void PostOperatorAsyncInvalidPassword()
         {
 
         }

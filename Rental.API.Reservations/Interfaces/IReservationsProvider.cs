@@ -1,8 +1,6 @@
 ﻿using Rental.API.Reservations.Models.RequestModels;
 using Rental.API.Reservations.Models.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rental.API.Reservations.Interfaces

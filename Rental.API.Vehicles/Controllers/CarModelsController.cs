@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
 using Rental.API.Vehicles.Models.RequestModels;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Controllers
@@ -44,6 +42,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> PostCarModelAsync(CarModelRequest carModel)
         {
             var result = await carModelsProvider.PostCarModelAsync(carModel);
@@ -55,6 +54,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> DeleteCarModelAsync(int id)
         {
             var result = await carModelsProvider.DeleteCarModelAsync(id);
@@ -66,6 +66,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> PutCarModelAsync(CarModelUpdateRequest carModel)
         {
             var result = await carModelsProvider.PutCarModelAsync(carModel);
@@ -77,6 +78,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpPost("upload")]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> PostCarModelImage([FromForm] IFormFile file, int carModelID)
         {
             var result = await carModelsProvider.PostCarModelImageAsync(file, carModelID);

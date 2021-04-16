@@ -162,7 +162,9 @@ namespace Rental.API.Users.Providers
                 {
                         new Claim(JwtRegisteredClaimNames.Sub, user.RegistrationNumber),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim("Id", user.Id)
+                        new Claim("Id", user.Id),
+                        new Claim("UserName", user.UserName),
+                        new Claim(ClaimTypes.Role, "Operator")
                     }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Rental.API.Orchestrator.Interfaces;
 using Rental.API.Orchestrator.Models.RequestModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rental.API.Orchestrator.Controllers
@@ -20,6 +18,7 @@ namespace Rental.API.Orchestrator.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Customer")]
         [Route("reservations/active")]
         public async Task<IActionResult> SearchUserActiveReservationsAsync(SearchUserReservation search)
         {
@@ -32,6 +31,7 @@ namespace Rental.API.Orchestrator.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Customer")]
         [Route("reservations/historical")]
         public async Task<IActionResult> SearchUserHistoricalReservationsAsync(SearchUserReservation search)
         {
@@ -43,7 +43,7 @@ namespace Rental.API.Orchestrator.Controllers
             return NotFound();
         }
 
-        [HttpPost]
+        [HttpPost]        
         [Route("vehicles/available")]
         public async Task<IActionResult> SearchVehiclesAvailableAsync(SearchVehicleAvailability search)
         {

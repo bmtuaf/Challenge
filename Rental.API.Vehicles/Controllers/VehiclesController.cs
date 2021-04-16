@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
 using Rental.API.Vehicles.Models.RequestModels;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Controllers
@@ -51,6 +51,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> PostVehicleAsync(VehicleRequest vehicle)
         {
             var result = await vehicleProvider.PostVehicleAsync(vehicle);
@@ -62,6 +63,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> DeleteVehicleAsync(int id)
         {
             var result = await vehicleProvider.DeleteVehicleAsync(id);
@@ -73,6 +75,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> PutVehicleAsync(VehicleUpdateRequest vehicle)
         {
             var result = await vehicleProvider.PutVehicleAsync(vehicle);
