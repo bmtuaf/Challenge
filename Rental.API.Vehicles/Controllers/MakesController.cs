@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Rental.API.Vehicles.Interfaces;
 using Rental.API.Vehicles.Models.RequestModels;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace Rental.API.Vehicles.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> PostMakeAsync(MakeRequest name)
         {
             var result = await makesProvider.PostMakeAsync(name);
@@ -50,6 +52,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> DeleteMakeAsync(int id)
         {
             var result = await makesProvider.DeleteMakeAsync(id);
@@ -61,6 +64,7 @@ namespace Rental.API.Vehicles.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> PutMakeAsync(MakeUpdateRequest make)
         {
             var result = await makesProvider.PutMakeAsync(make);

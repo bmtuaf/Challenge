@@ -69,6 +69,37 @@ namespace Rental.API.Vehicles.Tests
             Assert.NotNull(make.ErrorMessage);
         }
 
+        [Fact]
+        public async void PostMakeAsyncValidName()
+        {
+
+        }
+        [Fact]
+        public async void PostMakeAsyncInvalidName()
+        {
+
+        }
+        [Fact]
+        public async void DeleteMakeAsyncValidId()
+        {
+
+        }
+        [Fact]
+        public async void DeleteMakeAsyncInvalidId()
+        {
+
+        }
+        [Fact]
+        public async void PutMakeAsyncValidId()
+        {
+
+        }
+        [Fact]
+        public async void PutMakeAsyncInvalidId()
+        {
+
+        }
+
         private void CreateMakes(VehiclesDBContext dbContext)
         {
             for (int i = 0; i < 10; i++)

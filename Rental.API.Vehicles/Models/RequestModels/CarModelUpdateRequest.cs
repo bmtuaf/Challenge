@@ -1,7 +1,10 @@
-﻿namespace Rental.API.Vehicles.Models.RequestModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Rental.API.Vehicles.Models.RequestModels
 {
     public class CarModelUpdateRequest
     {
+        [Required]
         public int ID { get; set; }
         public string Name { get; set; }
         public int MakeID { get; set; }

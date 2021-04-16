@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Rental.API.Orchestrator.Models.ViewModels
+﻿namespace Rental.API.Orchestrator.Models.ViewModels
 {
     public class AvailableCarModels
     {        

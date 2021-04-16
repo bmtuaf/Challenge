@@ -2,7 +2,6 @@
 using Rental.API.Vehicles.Models.RequestModels;
 using Rental.API.Vehicles.Models.ViewModels;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Rental.API.Vehicles.Interfaces

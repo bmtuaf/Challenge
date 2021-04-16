@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Rental.API.Reservations.Interfaces;
 using Rental.API.Reservations.Models.RequestModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rental.API.Reservations.Controllers
@@ -20,6 +18,7 @@ namespace Rental.API.Reservations.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> GetReservationsAsync()
         {
             var result = await reservationsProvider.GetReservationsAsync();
@@ -31,6 +30,7 @@ namespace Rental.API.Reservations.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Customer, Operator")]
         public async Task<IActionResult> GetReservationAsync(int id)
         {
             var result = await reservationsProvider.GetReservationAsync(id);
@@ -63,7 +63,7 @@ namespace Rental.API.Reservations.Controllers
             return NotFound();
         }
 
-        [HttpPost]
+        [HttpPost]        
         public async Task<IActionResult> PostReservationAsync(ReservationRequest request)
         {
             var result = await reservationsProvider.PostReservationAsync(request);
@@ -86,6 +86,7 @@ namespace Rental.API.Reservations.Controllers
         }
 
         [HttpPost("{id}/return")]
+        [Authorize(Roles = "Operator")]
         public async Task<IActionResult> PostVehicleReturnAsync(int id, ReturnRequest request)
         {
             request.ID = id;

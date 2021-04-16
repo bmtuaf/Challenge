@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rental.API.Orchestrator.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Rental.API.Orchestrator.Models.RequestModels;
 using System.IO;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rental.API.Orchestrator.Controllers
 {
@@ -23,7 +22,8 @@ namespace Rental.API.Orchestrator.Controllers
         }
 
 
-        [HttpPost]        
+        [HttpPost]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> PostReservationAsync(ReservationRequest reservation)
         {
             var result = await reservationOrchestratorService.PostReservationAsync(reservation);
