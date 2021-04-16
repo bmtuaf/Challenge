@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Rental.API.Users.Models.RequestModels
 {
     public class CustomerUpdateRequest
     {
+        [Required]
         public string CPF { get; set; }
         public string Name { get; set; }
         public DateTime Birthday { get; set; }
